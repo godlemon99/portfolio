@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="css/gamemain.css">
+    </head>
+    <body>
+        <div id="wrap">
+            <div id="map">                      <!--전체 맵 좌표-->
+                <div id="display">              <!--현재 보이는 화면-->
+                    <div id="playermove">           <!--플레이어 좌표-->
+
+                    </div>     
+                </div>
+            </div>
+        </div>
+        <script>
+            let plmove=document.getElementById("playermove");
+            let plmovex=50;
+            let curpl="";
+            let num=0;
+            for(let i=0;i<plmovex;i++){
+                curpl+="<div>";
+                for(let j=0;j<plmovex;j++){
+                    num++;
+                    curpl+="<div id='"+num+"' style='background-color:";
+                        if(num%6==0){
+                            curpl+="#1ee;'>";
+                        }
+                        if(num%6==1){
+                            curpl+="#4a4a4a;'>";
+                        }
+                        if(num%6==2){
+                            curpl+="#777;'>";
+                        }
+                        if(num%6==3){
+                            curpl+="#000;'>";
+                        }
+                        if(num%6==4){
+                            curpl+="#ccc;'>";
+                        }
+                        if(num%6==5){
+                            curpl+="#fff;'>";
+                        }
+                    curpl+="</div>";
+                }
+                curpl+="</div>";
+            }
+            curpl+="<div id='player'></div>";
+            plmove.innerHTML=curpl;
+            console.log(curpl);
+
+            let p=document.getElementById("player");
+            let x=44;
+            let y=44;
+            p.setAttribute("style","left:"+x+"%; top:"+y+"%;");
+            let key=[];
+            let LR_key;
+            let UD_key;
+            setInterval(move,20);
+            function move(){
+                if((key[37])&&(!key[39])){
+                    LR_key=1;
+                    x-=0.5;
+                }
+                if((!key[37])&&(key[39])){
+                    LR_key=2;
+                    x+=0.5;  
+                }
+                if((key[37])&&(key[39])){   //왼쪽 오른쪽 키를 동시에 눌렀을 때 왼쪽을 먼저 누르고 오른쪽 키를 누르면 오른쪽으로 가게 하고                            
+                    if(LR_key==1){          //오른쪽 키를 먼저 누르고 왼쪽 키를 누르면 왼쪽으로 가게 함
+                        x+=0.5;
+                    }
+                    if(LR_key==2){
+                        x-=0.5;
+                    }  
+                }
+                if((key[38])&&(!key[40])){
+                    UD_key=1;
+                    y-=0.5;
+                }
+                if(!(key[38])&&(key[40])){
+                    UD_key=2;
+                    y+=0.5;
+                }
+                if((key[38])&&(key[40])){   //위쪽 아래쪽 키를 동시에 눌렀을 때 위쪽을 먼저 누르고 아래쪽 키를 누르면 아래쪽으로 가게 하고                        
+                    if(UD_key==1){          //아래쪽 키를 먼저 누르고 위쪽 키를 누르면 위쪽으로 가게 함
+                        y+=0.5;
+                    }
+                    if(UD_key==2){
+                        y-=0.5;
+                    }  
+                }
+                p.setAttribute("style","left:"+x+"%; top:"+y+"%;");   
+                console.log(x+" "+y+" "+LR_key+" "+UD_key);
+            }
+            window.addEventListener("keydown",function(e){
+                key[e.keyCode]=true;
+            });
+            window.addEventListener("keyup",function(e){
+                key[e.keyCode]=false;
+                LR_key=0;
+                UD_key=0;
+            });
+        </script>
+    </body>
+</html>
